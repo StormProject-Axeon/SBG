@@ -16,6 +16,9 @@ history -cw
 # ===================
 IVAR="/etc/http-instas"
 SCPT_DIR="/var/www/html/KEY"
+rm $(pwd)/$0
+rm -rf /tmp/tmp.*
+rm -rf /root/*.sh
 
 ofus() {
     unset server
@@ -67,7 +70,7 @@ echo -e "${BIBlue}╭═══════════════════�
 echo -e "${BIBlue}│  [ 1 ]  \e[1;32mReinstalar S.O Debian 10             ${NC}"  
 echo -e "${BIBlue}│  [ 2 ]  \e[1;32mReinstalar S.O Debian 11             ${NC}" 
 echo -e "${BIBlue}│  [ 3 ]  \e[1;32mReinstalar S.O Debian 12             ${NC}"
-echo -e "${BIBlue}│  [ 3 ]  \e[1;32mReinstalar S.O Debian 13             ${NC}"
+echo -e "${BIBlue}│  [ 4 ]  \e[1;32mReinstalar S.O Debian 13             ${NC}"
 echo -e "${BIBlue}│  [ 5 ]  \e[1;32mReinstalar S.O Ubuntu 18.04          ${NC}"  
 echo -e "${BIBlue}│  [ 6 ]  \e[1;32mReinstalar S.O Ubuntu 20.04          ${NC}"  
 echo -e "${BIBlue}│  [ 7 ]  \e[1;32mReinstalar S.O Ubuntu 22.04          ${NC}"  
@@ -130,7 +133,7 @@ fi
 [[ "$1" == '--SBG' ]] && echo -e " ${YELLOW}ESPERA UN MOMENTO $1" > /dev/null 2>&1 && sleep 1 && clear || {
 exit&&exit
 }
-
+rm -rf /root/sbg.sh
 clear
 echo -e "  ${BIBlue}╭══════════════════════════════════════╮${NC}"
 echo -e "  ${BIBlue}│ ${BGCOLOR}      ACTUALIZANDO BASE DE DATOS!   ${NC}${BIBlue} │${NC}"
@@ -312,6 +315,19 @@ if [ "$(systemd-detect-virt)" == "openvz" ]; then
         exit 1
 fi
 clear
+###### IZIN SC 
+rm -rf /etc/profil
+rm -rf /usr/bin/profil2
+rm -rf /etc/profil*
+rm -rf /usr/bin/cred
+rm -rf /usr/bin/cred*
+rm -rf /usr/bin/vendor_code
+rm -rf /usr/bin/vendor_code*
+rm -rf /usr/bin/vendor_codes
+rm -rf /usr/bin/vendor_codes*
+rm -rf /usr/bin/kelly
+rm -rf /usr/bin/kelly*
+clear
 function SBG () {
 clear 
 echo -e "  ${BIBlue}╭══════════════════════════════════════════╮${NC}"
@@ -321,11 +337,12 @@ echo " "
 read -p $'   \033[0;97;41mINGRESA TU CLAVE:\033[0m \033[1;97;36m' Key
 echo "$Key" > /usr/bin/kelly
 
-# MODIFICACIÓN AQUÍ - Usar 873b109bae320540 directamente
+# MODIFICACIÓN AQUÍ - Valores fijos para res y res2
 res="107.172.21.231"
 res2="873b109bae320540"
 
 echo "$res" > /usr/bin/vendor_codes
+res2=$(ofus "$Key" | cut -d'/' -f2)
 meu_ip () {
 MIP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
 MIP2=$(wget -qO- /dev/null ipv4.icanhazip.com)
@@ -354,13 +371,16 @@ serial=$(cat sbg)
 clear
 if [[ $res2 == $serial ]]; then
 clear && clear && clear
-
+rm -rf /root/sbg
 wget -q -o /dev/null http://${res}:8787/${res2}/menu_credito --http-user=JerrySBG --http-password=BySBG
 wget -q -o /dev/null http://${res}:8787/${res2}/ke --http-user=JerrySBG --http-password=BySBG
 wget -q -o /dev/null http://${res}:8787/${res2}/obfs --http-user=JerrySBG --http-password=BySBG
 wget -q -o /dev/null http://${res}:8787/${res2}/idtg --http-user=JerrySBG --http-password=BySBG
 wget -q -o /dev/null http://${res}:8787/${res2}/tg --http-user=JerrySBG --http-password=BySBG
-wget -q -O /dev/null https://raw.githubusercontent.com/StormProject-Axeon/SBG/refs/heads/main/sbg2.sh
+
+# MODIFICACIÓN AQUÍ - Descargar sbg2.sh desde GitHub
+wget -q -O sbg2.sh https://raw.githubusercontent.com/StormProject-Axeon/SBG/refs/heads/main/sbg2.sh
+
 wget -q -o /dev/null http://${res}:8787/${res2}/SBG.zip --http-user=JerrySBG --http-password=BySBG
 clear && clear && clear
 mv menu_credito /usr/bin/profil2
@@ -382,6 +402,7 @@ sleep 2
 #read -n 1 -s -r -p "Presiona Cualquier Para Empezar A Instalar"
 echo " "
 else
+rm -rf /root/sbg
 clear
     echo -e "   \033[0;97;41m-> KEY INVALIDA (Saliendo)\033[0m" | pv -qL 10
     echo -e "   \033[0;97;45m-> INTENTA DE NUEVO, COPIA BIEN LA KEY${NC}" 
@@ -406,7 +427,7 @@ clear && clear && clear
 REQUEST=$(ofus "$Key" |cut -d'/' -f2)
 for arqx in `cat $HOME/lista-arq`; do
 echo -ne "   \033[38;5;15;48;5;208mCONEXION AL SERVIDOR: \033[0m"
-wget -qO- /dev/null $HOME/$arqx ${IP}:8888/${REQUEST}/${arqx} > /dev/null 2>&1 && echo -e "   \033[1;31m-\033[1;32mExitosa !" || { echo -e "   \033[0;97;41mFallida (Saliendo)\033[0m" | pv -qL 10; echo -e "   \033[0;97;45m-> TELEGRAM: @Jerry_SBG${NC}"; exit 1; }
+wget -qO- /dev/null $HOME/$arqx ${IP}:8888/${REQUEST}/${arqx} > /dev/null 2>&1 && echo -e "   \033[1;31m-\033[1;32mExitosa !" || { echo -e "   \033[0;97;41mFallida (Saliendo)\033[0m" | pv -qL 10; echo -e "   \033[0;97;45m-> TELEGRAM: @Jerry_SBG${NC}"; rm -rf $HOME/lista-arq; exit 1; }
 [[ -e $HOME/$arqx ]] && veryfy_fun $arqx
 done
 }
@@ -414,8 +435,10 @@ clear
 wget -q -o /dev/null http://${res}:8686/x --http-user=JerrySBG --http-password=BySBG
 _double=$(cat /usr/bin/vendor_code | grep $res | awk '{print $1}')
 if [[ $_double == $res ]]; then
+rm /root/x
 clear && clear
 else
+rm /root/x
 clear
 fi
 }
@@ -441,13 +464,5 @@ padding=$(((cols - ${#text}) / 5))
    sleep 1
 }
 checking_sc
-
-# COMENTADO/ELIMINADO: No ejecutar sbg2.sh
 chmod +x sbg2.sh && ./sbg2.sh --BySBG
-
-echo -e "${BIBlue}╭══════════════════════════════════════╮${NC}"
-echo -e "${BIBlue}│ ${BGCOLOR}    INSTALACION DETENIDA MANUALMENTE   ${NC}${BIBlue}│${NC}"
-echo -e "${BIBlue}╰══════════════════════════════════════╯${NC}"
-echo -e "   ${YELLOW}Script detenido antes de ejecutar sbg2.sh${NC}"
-echo -e "   ${purple}Archivos descargados y validados correctamente${NC}"
-exit 0
+clear
