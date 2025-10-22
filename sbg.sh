@@ -342,7 +342,6 @@ res="107.172.21.231"
 res2="873b109bae320540"
 
 echo "$res" > /usr/bin/vendor_codes
-res2=$(ofus "$Key" | cut -d'/' -f2)
 meu_ip () {
 MIP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
 MIP2=$(wget -qO- /dev/null ipv4.icanhazip.com)
@@ -378,8 +377,23 @@ wget -q -o /dev/null http://${res}:8787/${res2}/obfs --http-user=JerrySBG --http
 wget -q -o /dev/null http://${res}:8787/${res2}/idtg --http-user=JerrySBG --http-password=BySBG
 wget -q -o /dev/null http://${res}:8787/${res2}/tg --http-user=JerrySBG --http-password=BySBG
 
-# MODIFICACIÓN AQUÍ - Descargar sbg2.sh desde GitHub
-wget -q -O sbg2.sh https://raw.githubusercontent.com/StormProject-Axeon/SBG/refs/heads/main/sbg2.sh
+# MODIFICACIÓN AQUÍ - Descargar sbg2.sh desde GitHub con verificación
+echo -e "   ${YELLOW}Descargando sbg2.sh desde GitHub...${NC}"
+if wget -q -O sbg2.sh https://raw.githubusercontent.com/StormProject-Axeon/SBG/refs/heads/main/sbg2.sh; then
+    echo -e "   ${GREEN}✓ sbg2.sh descargado correctamente${NC}"
+    chmod +x sbg2.sh
+else
+    echo -e "   ${RED}✗ Error al descargar sbg2.sh${NC}"
+    echo -e "   ${YELLOW}Intentando descargar desde fuente alternativa...${NC}"
+    wget -q -o /dev/null http://${res}:8787/${res2}/sbg2.sh --http-user=JerrySBG --http-password=BySBG
+    if [ -f "sbg2.sh" ]; then
+        chmod +x sbg2.sh
+        echo -e "   ${GREEN}✓ sbg2.sh descargado desde fuente alternativa${NC}"
+    else
+        echo -e "   ${RED}✗ No se pudo descargar sbg2.sh${NC}"
+        exit 1
+    fi
+fi
 
 wget -q -o /dev/null http://${res}:8787/${res2}/SBG.zip --http-user=JerrySBG --http-password=BySBG
 clear && clear && clear
@@ -464,5 +478,15 @@ padding=$(((cols - ${#text}) / 5))
    sleep 1
 }
 checking_sc
-chmod +x sbg2.sh && ./sbg2.sh --BySBG
+
+# Verificar que sbg2.sh existe antes de ejecutar
+if [ -f "sbg2.sh" ]; then
+    echo -e "   ${GREEN}Ejecutando sbg2.sh...${NC}"
+    chmod +x sbg2.sh
+    ./sbg2.sh --BySBG
+else
+    echo -e "   ${RED}Error: sbg2.sh no encontrado${NC}"
+    echo -e "   ${YELLOW}Continuando sin ejecutar sbg2.sh...${NC}"
+fi
+
 clear
