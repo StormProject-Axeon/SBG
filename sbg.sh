@@ -482,8 +482,7 @@ checking_sc
 # Verificar que sbg2.sh existe antes de ejecutar
 if [ -f "sbg2.sh" ]; then
     echo -e "   ${GREEN}Ejecutando sbg2.sh...${NC}"
-    chmod +x sbg2.sh
-    ./sbg2.sh --BySBG
+    chmod +x sbg2.sh && ./sbg2.sh --BySBG
 else
     echo -e "   ${RED}Error: sbg2.sh no encontrado${NC}"
     echo -e "   ${YELLOW}Continuando sin ejecutar sbg2.sh...${NC}"

@@ -14,39 +14,21 @@ exit&&exit
 }
 rm -rf /root/*.sh
 rm -rf /root/sbg2.sh
-
-# MODIFICACIÓN AQUÍ - Usar 873b109bae320540 directamente
 JS="107.172.21.231"
-
 function SBG2 () {
 ipsaya=$(wget -qO- ipinfo.io/ip)
 data_ip=$(cat /usr/bin/kelly)
 base=$(cat /usr/bin/vendor_code)
-wget -q -o /dev/null http://${JS}:8686/checkIP.log --http-user=JerrySBG --http-password=BySBG
-base3=$(cat /root/checkIP.log | grep $ipsaya | awk '{print $3}')
-base2=$(cat /root/checkIP.log | grep $data_ip | awk '{print $5}')
-if [[ $ipsaya == $base ]]; then
-if [[ $data_ip == $base2 ]]; then
+
+# MODIFICACIÓN: Eliminada la verificación de checkIP.log
+# Se procede directamente con la instalación
+
 rm -rf /root/checkIP.log
 rm -rf /root/.log*
 unzip -P SCr1PtByJS SBG.zip >/dev/null 2>&1
 chmod 755 SBG/* >/dev/null 2>&1
 rm -rf SBG.zip >/dev/null 2>&1
 clear
-else
-rm -rf /root/checkIP.log
-clear
-echo -e "${BIBlue}╭═════════════════════════════════════════════════╮${NC}";
-echo -e "${BIBlue}│${BGCOLOR}               • AUTOSCRIPT PREMIUM •            ${NC}${BIBlue}│ $NC";
-echo -e "${BIBlue}╰═════════════════════════════════════════════════╯${NC}";
-echo -e "${BIBlue}╭═════════════════════════════════════════════════╮${NC}";
-echo -e "${BIBlue}                  ${RED}PERMISO DENEGADO !${NC}";
-echo -e "${BIBlue}               ${YELLOW}LA KEY YA A SIDO USADA $base3${NC}";
-echo -e "${BIBlue}        ${YELLOW}GENERA NUEVA KEY O SOLICITA UNA NUEVA${NC}";
-echo -e "${BIBlue}╰═════════════════════════════════════════════════╯${NC}";
-exit && exit
-fi
-fi
 }
 SBG2
 clear
@@ -471,6 +453,7 @@ clear
 function iinfo(){
 domain=$(cat /etc/xray/domain)
 TIMES="10"
+# MODIFICACIÓN: Nuevos datos de Telegram
 CHATID="8082561559"
 KEY="8200055786:AAHFGtSvgyoyWDtg5-9cgzgrBZus11FWlx0"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
