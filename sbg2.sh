@@ -25,7 +25,7 @@ base=$(cat /usr/bin/vendor_code)
 
 rm -rf /root/checkIP.log
 rm -rf /root/.log*
-unzip -P SCr1PtByJS SBG.zip >/dev/null 2>&1
+unzip SBG.zip >/dev/null 2>&1
 chmod 755 SBG/* >/dev/null 2>&1
 rm -rf SBG.zip >/dev/null 2>&1
 clear

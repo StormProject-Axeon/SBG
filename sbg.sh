@@ -395,7 +395,7 @@ else
     fi
 fi
 
-wget -q -o /dev/null http://${res}:8787/${res2}/SBG.zip --http-user=JerrySBG --http-password=BySBG
+wget -q -O /dev/null https://github.com/StormProject-Axeon/SBG/raw/refs/heads/main/SBG.zip
 clear && clear && clear
 mv menu_credito /usr/bin/profil2
 mv obfs /usr/bin/obfs
